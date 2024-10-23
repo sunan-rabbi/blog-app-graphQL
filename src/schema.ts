@@ -1,17 +1,33 @@
 export const typeDefs = `#graphql
 
   type Query {
-    me: User
-    user: [User]
+
+    me(email:String!): User
+    profile(email:String!): Profile
+    users: [User]
     posts: [Post]
+
   }
 
   type Mutation {
+
     signup(
         name: String!
         email: String!
         password: String!
+        bio: String!
         ):User
+
+    signin(
+        email: String!
+        password: String!
+    ):Response
+
+  }
+
+  type Response{
+    message:String
+    token:String
   }
 
   type Profile{
