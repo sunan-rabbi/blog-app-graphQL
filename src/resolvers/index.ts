@@ -1,14 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import { hash } from 'bcrypt'
+import config from '../config'
+import { IUser } from '../types';
 
 const prisma = new PrismaClient()
-const saltRound = 12
-
-type IUser = {
-    name: string;
-    email: string;
-    password: string;
-}
 
 export const resolvers = {
     Query: {
@@ -17,7 +12,7 @@ export const resolvers = {
     Mutation: {
         signup: async (parent: any, args: IUser, context: any) => {
 
-            const hashPassword = await hash(args.password, saltRound)
+            const hashPassword = await hash(args.password, Number(config.bcrypt.salt))
             return await prisma.user.create({
                 data: {
                     ...args,
