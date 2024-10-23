@@ -21,11 +21,21 @@ export const typeDefs = `#graphql
     signin(
         email: String!
         password: String!
-    ):Response
+    ):LoginResponse
+
+    addPost(
+      title: String!
+      content: String!
+    ):PostResponse
 
   }
 
-  type Response{
+  type PostResponse{
+    message:String
+    data:Post
+  }
+
+  type LoginResponse{
     message:String
     token:String
   }
