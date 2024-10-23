@@ -10,24 +10,25 @@
 ## Table
 
 -Post
----id
----title
----content
----authorId
----createdAt
----updatedAt
+  -id
+  -title
+  -content
+  -authorId
+  -createdAt
+  -updatedAt
+  -published
 
 -User
----id
----name
----email
----password
----createdAt
----updatedAt
----profile
+  -id
+  -name
+  -email
+  -password
+  -createdAt
+  -updatedAt
+  -profile
 
 -Profile
----id
----bio
----createdAt
----updatedAt
+  -id
+  -bio
+  -createdAt
+  -updatedAt
