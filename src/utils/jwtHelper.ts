@@ -8,6 +8,12 @@ export const jwtToken = async (data: IJwtData) => {
 }
 
 export const jwtDecode = async (data: string) => {
-    const decode = jwt.verify(data, (config.jwt.secret as string)) as IJwtDecode
+    let decode;
+    try {
+        decode = jwt.verify(data, (config.jwt.secret as string)) as IJwtDecode
+    } catch (error) {
+        console.log(error);
+
+    }
     return decode
 }

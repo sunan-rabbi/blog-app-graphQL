@@ -1,6 +1,6 @@
 import { compare, hash } from "bcrypt"
 import config from "../../config"
-import { IContext, IPost, ISignin, IUser } from "../../types"
+import { IContext, IDeletePost, IPost, ISignin, IUpdatePost, IUser } from "../../types"
 import { jwtToken } from "../../utils/jwtHelper"
 
 export const Mutation = {
@@ -86,8 +86,104 @@ export const Mutation = {
             data: result
         }
 
+    },
+
+    updatePost: async (parent: any, args: IUpdatePost, { prisma, userInfo }: IContext) => {
+        const { postId, ...rest } = args
+        const isUserExists = await prisma.user.findUnique({
+            where: {
+                id: userInfo.userId
+            }
+        })
+
+        if (!isUserExists) {
+            return {
+                message: "User doesn't exists",
+                data: null
+            }
+        }
+
+        const isPostExists = await prisma.post.findUnique({
+            where: {
+                id: args.postId
+            }
+        })
+
+        if (!isPostExists) {
+            return {
+                message: "Post doesn't exists",
+                data: null
+            }
+        }
+
+        if (isUserExists.id !== isPostExists.authorId) {
+            return {
+                message: "Post doesn't exists",
+                data: null
+            }
+        }
+
+        const result = await prisma.post.update({
+            where: {
+                id: postId
+            },
+            data: {
+                ...rest
+            }
+        })
+
+        return {
+            message: "Post is updated successfully",
+            data: result
+        }
+    },
+
+    deletePost: async (parent: any, args: IDeletePost, { prisma, userInfo }: IContext) => {
+        const { postId } = args
+
+        const isUserExists = await prisma.user.findUnique({
+            where: {
+                id: userInfo.userId
+            }
+        })
+
+        if (!isUserExists) {
+            return {
+                message: "User doesn't exists",
+                data: null
+            }
+        }
+
+        const isPostExists = await prisma.post.findUnique({
+            where: {
+                id: args.postId
+            }
+        })
+
+        if (!isPostExists) {
+            return {
+                message: "Post doesn't exists",
+                data: null
+            }
+        }
+
+        if (isUserExists.id !== isPostExists.authorId) {
+            return {
+                message: "Post doesn't exists",
+                data: null
+            }
+        }
+
+        const result = await prisma.post.delete({
+            where: {
+                id: postId
+            }
+        })
+
+        return {
+            message: "Post is deleted successfully",
+            data: result
+        }
     }
-
-
 
 }

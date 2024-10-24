@@ -28,6 +28,16 @@ export const typeDefs = `#graphql
       content: String!
     ):PostResponse
 
+    updatePost(
+      postId:String!
+      title: String
+      content: String
+    ):PostResponse
+
+    deletePost(
+      postId:String!
+    ):PostResponse
+
   }
 
   type PostResponse{
