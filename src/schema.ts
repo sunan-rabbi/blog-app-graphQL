@@ -38,6 +38,10 @@ export const typeDefs = `#graphql
       postId:String!
     ):PostResponse
 
+    publishPost(
+      postId:String!
+    ):PostResponse
+
   }
 
   type PostResponse{
@@ -55,6 +59,7 @@ export const typeDefs = `#graphql
     bio: String!
     createdAt: String!
     updatedAt: String!
+    user:User
   }
 
   type User{

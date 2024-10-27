@@ -184,6 +184,61 @@ export const Mutation = {
             message: "Post is deleted successfully",
             data: result
         }
+    },
+
+    publishPost: async (parent: any, args: IDeletePost, { prisma, userInfo }: IContext) => {
+
+        const { postId } = args
+
+        const isUserExists = await prisma.user.findUnique({
+            where: {
+                id: userInfo.userId
+            }
+        })
+
+        if (!isUserExists) {
+            return {
+                message: "User doesn't exists",
+                data: null
+            }
+        }
+
+        const isPostExists = await prisma.post.findUnique({
+            where: {
+                id: args.postId,
+                published: false
+            }
+        })
+
+        if (!isPostExists) {
+            return {
+                message: "Post doesn't exists",
+                data: null
+            }
+        }
+
+        if (isUserExists.id !== isPostExists.authorId) {
+            return {
+                message: "Post doesn't exists",
+                data: null
+            }
+        }
+
+        const result = await prisma.post.update({
+            where: {
+                id: postId
+            },
+            data: {
+                published: true
+            }
+        })
+
+        return {
+            message: "Post is published successfully",
+            data: result
+        }
     }
+
+
 
 }
