@@ -1,43 +1,26 @@
+import { postLoader } from "../dataLoader/post.dataload";
+import { profileLoader } from "../dataLoader/profile.dataloader";
+import { userLoader } from "../dataLoader/user.dataloader";
 import { IContext } from "../types";
 
 export const Post = {
     author: async (parent: any, args: any, { prisma }: IContext) => {
-        return prisma.user.findUnique({
-            where: {
-                id: parent.authorId
-            }
-        })
+        return userLoader.load(parent.authorId)
 
     }
 }
 export const Profile = {
     user: async (parent: any, args: any, { prisma }: IContext) => {
-        return prisma.user.findUnique({
-            where: {
-                id: parent.userId
-            }
-        })
-
+        return profileLoader.load(parent.userId)
     }
 }
 
 export const User = {
     posts: async (parent: any, args: any, { prisma, userInfo }: IContext) => {
-        const isMyProfile = parent.id === userInfo.userId
-        if (isMyProfile) {
-            return prisma.post.findMany({
-                where: {
-                    authorId: parent.id
-                }
-            })
-        }
-        else {
-            return prisma.post.findMany({
-                where: {
-                    authorId: parent.id,
-                    published: true
-                }
-            })
-        }
+        const isMyProfile = parent.id === userInfo.userId;
+
+        const allPosts = await postLoader.load(parent.id);
+
+        return isMyProfile ? allPosts : allPosts.filter(post => post.published);
     }
 }

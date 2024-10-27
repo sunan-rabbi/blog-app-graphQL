@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import { IContext, IJwtDecode } from './types';
 import { jwtDecode } from './utils/jwtHelper';
 
-const prisma = new PrismaClient()
+export const prisma = new PrismaClient()
 
 const main = async () => {
 
