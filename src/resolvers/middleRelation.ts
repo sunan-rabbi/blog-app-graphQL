@@ -1,4 +1,4 @@
-import { postLoader } from "../dataLoader/post.dataload";
+import { postLoader } from "../dataLoader/post.dataloader";
 import { profileLoader } from "../dataLoader/profile.dataloader";
 import { userLoader } from "../dataLoader/user.dataloader";
 import { IContext } from "../types";
